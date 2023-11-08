@@ -58,16 +58,18 @@ class Neuron_AND():
             self.weights.append(random.random())
 
     def learn(self, data_train_in, data_train_out):
-        for x, out in data_train_in, data_train_out:
-            temp = (x[0] * self.weights[0]) * (x[1] * self.weights[1]) + self.b * self.weights[2]
+        i = 0
+        for x1, x2 in data_train_in:
+            temp = (x1 * self.weights[0]) * (x2 * self.weights[1]) + self.b * self.weights[2]
             temp = 1 / (1 + torch.exp(torch.tensor(-temp)))
-            error = out - temp
-            self.weights[0] += error * x[0]
-            self.weights[1] += error * x[1]
+            error = data_train_out[i] - temp
+            i += 1
+            self.weights[0] += error * x1
+            self.weights[1] += error * x2
             self.weights[2] += error * self.b
 
     def calc(self, input_data):
-        out = (input_data[0] * self.weights[0]) * (input_data[1] * self.weights[1]) + self.b * self.weights[2]
+        out = (input_data['x'] * self.weights[0]) * (input_data['y'] * self.weights[1]) + self.b * self.weights[2]
         return 1 / (1 + torch.exp(torch.tensor(-out)))
 
 
@@ -140,17 +142,17 @@ if __name__ == '__main__':
         {"in": [1, 1], "out": [1]}
     ]
 
-    tensor_train_x = list(map(lambda item: item["in"], data_train_and))
-    tensor_train_y = list(map(lambda item: item["out"], data_train_and))
+    train_and_x = list(map(lambda item: item["in"], data_train_and))
+    train_and_y = list(map(lambda item: item["out"], data_train_and))
 
-    tensor_train_x = torch.tensor(tensor_train_x).to(torch.float32).to(tensor_device)
-    tensor_train_y = torch.tensor(tensor_train_y).to(torch.float32).to(tensor_device)
+    train_and_x = torch.tensor(train_and_x).to(torch.float32).to(tensor_device)
+    train_and_y = torch.tensor(train_and_y).to(torch.float32).to(tensor_device)
 
 
     neuron_and = Neuron_AND()
 
     for i in range(5000):
-        neuron_and.learn(tensor_train_x, tensor_train_y)
+        neuron_and.learn(train_and_x, train_and_y)
 
     input_data_and = [
         {"x": 0, "y": 0},
@@ -160,7 +162,7 @@ if __name__ == '__main__':
     ]
 
     for data in input_data_and:
-        print(data["x"], "И", data["y"], "=", neuron_and.calc(input_data_and))
+        print(data["x"], "И", data["y"], "=", neuron_and.calc(data).item())
 
     # neuron_not = Neuron_NOT()
     #
