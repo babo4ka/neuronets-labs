@@ -40,14 +40,14 @@ class Neuron_NOT():
     def learn(self, data_train_x, data_train_out):
         for x, out in data_train_x, data_train_out:
             temp = x * self.weights[0] + self.b * self.weights[1]
-            temp = 1 / (1 + torch.exp(torch.tensor(-temp)))
+            temp = 1 / (1 + torch.exp(torch.Tensor(-temp)))
             error = out - temp
             self.weights[0] += error * x
             self.weights[1] += error * self.b
 
     def calc(self, x):
         out = x * self.weights[0] + self.b * self.weights[1]
-        return 1 / (1 + torch.exp(torch.tensor(-out)))
+        return 1 / (1 + torch.exp(torch.Tensor(-out)))
 
 
 class Neuron_AND():
@@ -61,7 +61,7 @@ class Neuron_AND():
         i = 0
         for x1, x2 in data_train_in:
             temp = (x1 * self.weights[0]) * (x2 * self.weights[1]) + self.b * self.weights[2]
-            temp = 1 / (1 + torch.exp(torch.tensor(-temp)))
+            temp = 1 / (1 + torch.exp(torch.Tensor(-temp)))
             error = data_train_out[i] - temp
             i += 1
             self.weights[0] += error * x1
@@ -70,7 +70,7 @@ class Neuron_AND():
 
     def calc(self, input_data):
         out = (input_data['x'] * self.weights[0]) * (input_data['y'] * self.weights[1]) + self.b * self.weights[2]
-        return 1 / (1 + torch.exp(torch.tensor(-out)))
+        return 1 / (1 + torch.exp(torch.Tensor(-out)))
 
 
 class Neuron_OR():
@@ -84,7 +84,7 @@ class Neuron_OR():
         i = 0
         for x1, x2 in data_train_in:
             temp = x1 * self.weights[0] + x2 * self.weights[1] + self.b * self.weights[2]
-            temp = 1 / (1 + torch.exp(torch.tensor(-temp)))
+            temp = 1 / (1 + torch.exp(torch.Tensor(-temp)))
             error = data_train_out[i] - temp
             i += 1
             self.weights[0] += error * x1
@@ -93,7 +93,7 @@ class Neuron_OR():
 
     def calc(self, input_data):
         out = input_data['x'] * self.weights[0] + input_data['y'] * self.weights[1] + self.b * self.weights[2]
-        return 1 / (1 + torch.exp(torch.tensor(-out)))
+        return 1 / (1 + torch.exp(torch.Tensor(-out)))
 
 
 if __name__ == '__main__':
@@ -157,6 +157,8 @@ if __name__ == '__main__':
     for data in input_data:
         print(data["x"], "И", data["y"], "=", round(neuron_and.calc(data).item()))
 
+    print("==============================================")
+
     # нейрон ИЛИ
 
     # данные для обучения
@@ -183,8 +185,10 @@ if __name__ == '__main__':
     for data in input_data:
         print(data["x"], "ИЛИ", data["y"], "=", round(neuron_or.calc(data).item()))
 
+    print("==============================================")
+
     #результат операции XOR
     for data in input_data:
-        print(data["x"], "XOR", data["y"], "=", neuron_or.calc(
+        print(data["x"], "XOR", data["y"], "=", round(neuron_or.calc(
             {'x': neuron_and.calc({'x': neuron_not.calc(data['x']).item(), 'y': data['y']}).item(),
-             'y': neuron_and.calc({'x': data['x'], 'y': neuron_not.calc(data['y']).item()}).item()}).item())
+             'y': neuron_and.calc({'x': data['x'], 'y': neuron_not.calc(data['y']).item()}).item()}).item()))
