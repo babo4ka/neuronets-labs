@@ -83,22 +83,22 @@ class Neuron_XOR():
     def learn(self, data_train_in, data_train_out, neuron_not, neuron_and):
         i = 0
         for x1, x2 in data_train_in:
-            temp = neuron_and.calc({'x': neuron_not.calc(x1).item(), 'y': x2}).item() * self.weights[
-                0] + neuron_and.calc({'x': x1, 'y': neuron_not.calc(x2).item()}).item() * self.weights[1] + self.b * \
-                   self.weights[2]
+            x = neuron_and.calc({'x': neuron_not.calc(x1).item(), 'y': x2}).item()
+            y = neuron_and.calc({'x': x1, 'y': neuron_not.calc(x2).item()}).item()
+            temp = x * self.weights[0] + y * self.weights[1] + self.b * self.weights[2]
             temp = 1 / (1 + torch.exp(torch.tensor(-temp)))
             error = data_train_out[i] - temp
             i += 1
-            self.weights[0] += error * x1
-            self.weights[1] += error * x2
+            self.weights[0] += error * x
+            self.weights[1] += error * y
             self.weights[2] += error * self.b
 
     def calc(self, input_data, neuron_not, neuron_and):
-        out = (((neuron_and.calc({'x': neuron_not.calc(input_data['x']).item(), 'y': input_data['y']}).item()) *
-                self.weights[0] +
-                neuron_and.calc({'x': input_data['x'], 'y': neuron_not.calc(input_data['y']).item()}).item() *
-                self.weights[1]) +
-               self.b * self.weights[2])
+        x = neuron_and.calc({'x': neuron_not.calc(input_data['x']).item(), 'y': input_data['y']}).item()
+        y = neuron_and.calc({'x': input_data['x'], 'y': neuron_not.calc(input_data['y']).item()}).item()
+        print('in xor', 'not', input_data['x'], 'and', input_data['y'], '=', x)
+        print('in xor', input_data['x'], 'and not', input_data['y'], '=', y)
+        out = x * self.weights[0] + y * self.weights[1] + self.b * self.weights[2]
         return 1 / (1 + torch.exp(torch.tensor(-out)))
 
 
