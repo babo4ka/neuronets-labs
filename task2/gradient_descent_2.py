@@ -32,11 +32,15 @@ for t in range(500):
     functions.append(function(w).data.cpu().numpy().copy())
     step(function, w)
 
-print(w)
+print(w.size)
 print(variables[50])
 print(functions[50])
 
 
+
+
 # fig = plt.figure()
-# ax = Axes3D(fig)
-# ax.plot_surface(x, y, functions, rstride=4, cstride=4, cmap=cm.jet)
+# # ax = Axes3D(fig)
+# ax = fig.add_subplot(111, projection='3d')
+# ax.plot_surface(x, y, z, rstride=4, cstride=4, cmap=cm.jet)
+# plt.show()
