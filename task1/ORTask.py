@@ -32,8 +32,9 @@ for i in range(4):
 
 line = [-b, b]
 
+start, end = [0, -b], [-b, 0]
 
 plt.scatter(dots0[0][:], dots0[1][:], c='red')
 plt.scatter(dots1[0][:], dots1[1][:], c='green')
-plt.plot(line)
+plt.plot(start, end)
 plt.show()
