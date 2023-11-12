@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-w1, w2 = 2, 1.5
+w1, w2 = 1, 1
 b = -0.5
 
 x1 = [1, 1, 0, 0]
