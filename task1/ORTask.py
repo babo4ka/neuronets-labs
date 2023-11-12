@@ -1,52 +1,39 @@
 import matplotlib.pyplot as plt
-import numpy
-import random
-import pandas as pd
+
+w1, w2 = 2, 1.5
+b = -0.5
+
+x1 = [1, 1, 0, 0]
+x2 = [1, 0, 1, 0]
+
+input = [x1, x2]
+
+dots0 = list()
+dots0.append(list())
+dots0.append((list()))
+
+dots1 = list()
+dots1.append(list())
+dots1.append((list()))
+
+for i in range(4):
+    x = input[0][i]
+    y = input[1][i]
+    print(x, 'OR', y, "=", end=" ")
+    result = x*w1 + y*w2 + b
+    if result < 0:
+        dots0[0].append(x)
+        dots0[1].append(y)
+        print(0)
+    else:
+        dots1[0].append(x)
+        dots1[1].append(y)
+        print(1)
+
+line = [-b, b]
 
 
-class Neuron_OR():
-    def __init__(self):
-        self.weights = list()
-        self.b = 1
-        for i in range(3):
-            self.weights.append(random.random())
-
-    def learn(self, x1, x2, out):
-        temp = x1 * self.weights[0] + x2 * self.weights[1] + self.b * self.weights[2]
-        temp = 1 / (1 + numpy.exp(-temp))
-        error = out - temp
-        self.weights[0] += error * x1
-        self.weights[1] += error * x2
-        self.weights[2] += error * self.b
-
-    def calc(self, input_data):
-        xs = list()
-        ys = list()
-        outs = list()
-        for x, y in input_data:
-            out = x * self.weights[0] + y * self.weights[1] + self.b * self.weights[2]
-            out = 1 / (1 + numpy.exp(-out))
-            xs.append(x)
-            ys.append(y)
-            outs.append(out)
-        return pd.DataFrame({
-            "x": xs,
-            "y": ys,
-            "out": outs
-        })
-
-
-if __name__ == '__main__':
-    neuron = Neuron_OR()
-
-    for j in range(5000):
-        neuron.learn(1, 1, 1)
-        neuron.learn(1, 0, 1)
-        neuron.learn(0, 1, 1)
-        neuron.learn(0, 0, 0)
-
-    result = neuron.calc([[0, 0], [0, 1], [1, 0], [1, 1]])
-
-    for index, row in result.iterrows():
-        print(row["x"].astype('int32'), "ИЛИ", row["y"].astype('int32'), "=", row["out"])
-
+plt.scatter(dots0[0][:], dots0[1][:], c='red')
+plt.scatter(dots1[0][:], dots1[1][:], c='green')
+plt.plot(line)
+plt.show()
