@@ -3,6 +3,7 @@ import random
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_wine
+import time
 
 wine = load_wine()
 features = 13
@@ -50,8 +51,9 @@ wine_net = WineNet(n_input, n_hidden)
 loss = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(wine_net.parameters(), lr=1.0e-3)
 
-batch_size = 100  # choose different batch sizes
+batch_size = 50  # choose different batch sizes
 
+start = time.time()
 for epoch in range(5000):
     order = np.random.permutation(len(X_train))
     for start_index in range(0, len(X_train), batch_size):
@@ -73,4 +75,6 @@ for epoch in range(5000):
         test_preds = wine_net.forward(X_test)
         test_preds = test_preds.argmax(dim=1)
 
+end = time.time()
 print(wine_net.fc1.in_features, np.asarray((test_preds == y_test).float().mean()) > 0.8)
+print('время:', end-start)
