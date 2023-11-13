@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_wine
 
 wine = load_wine()
-features =  13
+features = 13
 
 X_train, X_test, y_train, y_test = train_test_split(
     wine.data[:, :features],
@@ -23,7 +23,10 @@ class WineNet(torch.nn.Module):
     def __init__(self, n_input, n_hidden_neurons):
         super(WineNet, self).__init__()
         self.fc1 = torch.nn.Linear(n_input, n_hidden_neurons)
-        # your code here
+        self.activ1 = torch.nn.Sigmoid()
+        self.fc2 = torch.nn.Linear(n_hidden_neurons, n_hidden_neurons)
+        self.activ2 = torch.nn.Sigmoid()
+        self.fc3 = torch.nn.Linear(n_hidden_neurons, 3)
         self.sm = torch.nn.Softmax(dim=1)
 
     def forward(self, x):
@@ -40,16 +43,16 @@ class WineNet(torch.nn.Module):
         return x
 
 
-n_input =  5
-n_hidden =  8# choose number of hidden neurons
+n_input = 13
+n_hidden = 5  # choose number of hidden neurons
 wine_net = WineNet(n_input, n_hidden)
 
 loss = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(wine_net.parameters(), lr=1.0e-3)
 
-batch_size = 10 # choose different batch sizes
+batch_size = 100  # choose different batch sizes
 
-for epoch in range(2000):
+for epoch in range(5000):
     order = np.random.permutation(len(X_train))
     for start_index in range(0, len(X_train), batch_size):
         optimizer.zero_grad()
@@ -66,7 +69,7 @@ for epoch in range(2000):
 
         optimizer.step()
 
-    if epoch % 10 == 0:
+    if epoch % 100 == 0:
         test_preds = wine_net.forward(X_test)
         test_preds = test_preds.argmax(dim=1)
 
