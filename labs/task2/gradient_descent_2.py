@@ -33,14 +33,45 @@ for t in range(500):
     step(function, w)
 
 print(w.size)
-print(variables[50])
-print(functions[50])
+print(variables[:][0])
+print(functions[0])
 
 
+def show_contours(objective,
+                  x_lims=[-10.0, 10.0],
+                  y_lims=[-10.0, 10.0],
+                  x_ticks=100,
+                  y_ticks=100):
+    x_step = (x_lims[1] - x_lims[0]) / x_ticks
+    y_step = (y_lims[1] - y_lims[0]) / y_ticks
+    X, Y = np.mgrid[x_lims[0]:x_lims[1]:x_step, y_lims[0]:y_lims[1]:y_step]
+    res = []
+    for x_index in range(X.shape[0]):
+        res.append([])
+        for y_index in range(X.shape[1]):
+            x_val = X[x_index, y_index]
+            y_val = Y[x_index, y_index]
+            res[-1].append(objective(torch.tensor(np.array([[x_val, y_val]]).T)))
+    res = np.array(res)
+    plt.figure(figsize=(7, 7))
+    plt.contour(X, Y, res, 100)
+    plt.xlabel('x1')
+    plt.ylabel('x2')
 
+
+show_contours(function)
+plt.scatter(np.array(variables)[:, 0], np.array(variables)[:, 1], s=10, c='r')
+plt.show()
+
+
+plt.figure(figsize=(7, 7))
+plt.plot(functions)
+plt.xlabel('step')
+plt.ylabel('function value')
+plt.show()
 
 # fig = plt.figure()
 # # ax = Axes3D(fig)
 # ax = fig.add_subplot(111, projection='3d')
-# ax.plot_surface(x, y, z, rstride=4, cstride=4, cmap=cm.jet)
+# ax.plot_surface(x, y, x, rstride=4, cstride=4, cmap=cm.jet)
 # plt.show()

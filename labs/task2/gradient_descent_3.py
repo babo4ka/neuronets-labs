@@ -10,14 +10,17 @@ alpha = 0.001
 
 opt = torch.optim.SGD([w], lr=alpha)
 
+
 def function(x):
     return torch.log(torch.log(x + 7)).prod()
+
 
 def step(f, x):
     func_res = f(x)
     func_res.backward()
     opt.step()
     opt.zero_grad()
+
 
 variables = list()
 functions = list()

@@ -28,6 +28,9 @@ y_train = y_train + noise
 # plt.ylabel('y_train')
 # plt.show()
 
+x_train.unsqueeze_(1)
+y_train.unsqueeze_(1)
+
 x_validation = torch.linspace(-10, 10, 100)
 y_validation = torch.pow(2, x_validation.data) * torch.sin(torch.pow(2, (-x_validation.data)))
 
@@ -70,3 +73,24 @@ def predict(net, x, y):
 
 
 predict(sine_net, x_validation, y_validation)
+
+
+optimizer = torch.optim.Adam(sine_net.parameters(), lr=0.01)
+
+
+def loss(pred, target):
+    squares = (pred - target) ** 2
+    return squares.mean()
+
+for epoch_index in range(2000):
+    optimizer.zero_grad()
+
+    y_pred = sine_net.forward(x_train)
+    loss_val = loss(y_pred, y_train)
+
+    loss_val.backward()
+
+    optimizer.step()
+
+predict(sine_net, x_validation, y_validation)
+
