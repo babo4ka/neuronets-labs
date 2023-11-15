@@ -51,10 +51,10 @@ wine_net = WineNet(n_input, n_hidden)
 loss = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(wine_net.parameters(), lr=1.0e-3)
 
-batch_size = 50  # choose different batch sizes
+batch_size = 10  # choose different batch sizes
 
 start = time.time()
-for epoch in range(5000):
+for epoch in range(2000):
     order = np.random.permutation(len(X_train))
     for start_index in range(0, len(X_train), batch_size):
         optimizer.zero_grad()

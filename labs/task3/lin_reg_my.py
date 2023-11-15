@@ -7,39 +7,17 @@ matplotlib.rcParams['figure.figsize'] = (13.0, 5.0)
 x_train = torch.rand(100)
 x_train = x_train * 20 - 10
 
-y_train = torch.pow(2, x_train) * torch.sin(torch.pow(2, (-x_train)))
-
-# plt.plot(x_train.numpy(), y_train.numpy(), 'o')
-# plt.title("y = 2^x * sin(2^(-x))")
-# plt.show()
+y_train = torch.pow((torch.cos(x_train + 3)), 2) * torch.pow(2, x_train-3)
 
 noise = torch.randn(y_train.size()) / 5
 
-# plt.plot(x_train.numpy(), noise.numpy(), 'o')
-# plt.title('Gaussian noise')
-# plt.show()
-
-
 y_train = y_train + noise
-
-# plt.plot(x_train.numpy(), y_train.numpy(), 'o')
-# plt.title('noisy 2^x * sin(2^(-x))')
-# plt.xlabel('x_train')
-# plt.ylabel('y_train')
-# plt.show()
 
 x_train.unsqueeze_(1)
 y_train.unsqueeze_(1)
 
 x_validation = torch.linspace(-10, 10, 100)
-y_validation = torch.pow(2, x_validation.data) * torch.sin(torch.pow(2, (-x_validation.data)))
-
-# plt.plot(x_validation.numpy(), y_validation.numpy(), 'o')
-# plt.title('2^x * sin(2^(-x))')
-# plt.xlabel('x_validation')
-# plt.ylabel('y_validation')
-# plt.show()
-
+y_validation =  torch.pow((torch.cos(x_validation.data + 3)), 2) * torch.pow(2, x_validation.data-3)
 
 x_validation.unsqueeze_(1)
 y_validation.unsqueeze_(1)
@@ -79,7 +57,8 @@ optimizer = torch.optim.Adam(sine_net.parameters(), lr=0.01)
 
 
 def loss(pred, target):
-    return (pred - target).abs().mean()
+    squares = (pred - target) ** 2
+    return squares.mean()
 
 for epoch_index in range(2000):
     optimizer.zero_grad()

@@ -32,7 +32,7 @@ for t in range(500):
     functions.append(function(w).data.cpu().numpy().copy())
     step(function, w)
 
-print(w.size)
+print(w.data)
 print(variables[:][0])
 print(functions[0])
 
