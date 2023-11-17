@@ -7,7 +7,7 @@ matplotlib.rcParams['figure.figsize'] = (13.0, 5.0)
 x_train = torch.rand(100)
 x_train = x_train * 20 - 10
 
-y_train = torch.pow((torch.cos(x_train + 3)), 2) * torch.pow(2, x_train-3)
+y_train = torch.pow((torch.cos(x_train + 3)), 2) * torch.pow(2, x_train - 3)
 
 noise = torch.randn(y_train.size()) / 5
 
@@ -17,10 +17,11 @@ x_train.unsqueeze_(1)
 y_train.unsqueeze_(1)
 
 x_validation = torch.linspace(-10, 10, 100)
-y_validation =  torch.pow((torch.cos(x_validation.data + 3)), 2) * torch.pow(2, x_validation.data-3)
+y_validation = torch.pow((torch.cos(x_validation.data + 3)), 2) * torch.pow(2, x_validation.data - 3)
 
 x_validation.unsqueeze_(1)
 y_validation.unsqueeze_(1)
+
 
 class SineNet(torch.nn.Module):
     def __init__(self, n_hidden_neurons):
@@ -36,7 +37,7 @@ class SineNet(torch.nn.Module):
         return x
 
 
-sine_net = SineNet(10)
+sine_net = SineNet(50)
 
 
 def predict(net, x, y):
@@ -52,13 +53,13 @@ def predict(net, x, y):
 
 predict(sine_net, x_validation, y_validation)
 
-
 optimizer = torch.optim.Adam(sine_net.parameters(), lr=0.01)
 
 
 def loss(pred, target):
     squares = (pred - target) ** 2
     return squares.mean()
+
 
 for epoch_index in range(2000):
     optimizer.zero_grad()
@@ -71,4 +72,3 @@ for epoch_index in range(2000):
     optimizer.step()
 
 predict(sine_net, x_validation, y_validation)
-
