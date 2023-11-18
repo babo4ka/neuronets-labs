@@ -28,6 +28,7 @@ server.bind(HOST)
 server.listen()
 print("here")
 
+
 while True:
     conn, addr = server.accept()
     print(addr)
@@ -39,10 +40,11 @@ while True:
 
         if task == OR_task:
             answers = list()
-
             x1 = data.get("x1")
             x2 = data.get("x2")
             inputData = [x1, x2]
+
+            neuron_or.clear_dots()
 
             for i in range(len(x1)):
                 d = np.array([inputData[0][i], inputData[1][i]])
@@ -93,6 +95,7 @@ while True:
             answers = answers.tolist()
             response = json.dumps({"answers": answers})
             conn.send(response.encode())
+
 
 
     conn.close()

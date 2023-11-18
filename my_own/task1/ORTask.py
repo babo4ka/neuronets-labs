@@ -4,7 +4,7 @@ import numpy as np
 class Neuron_OR():
     def __init__(self):
         self.w1, self.w2 = 1, 1
-        self.b = -0.5
+        self.b = -0.99
         self.dots0 = list()
         self.dots1 = list()
 
@@ -24,6 +24,10 @@ class Neuron_OR():
 
     def get_dots(self):
         return self.dots0, self.dots1
+
+    def clear_dots(self):
+        self.dots0 = list()
+        self.dots1 = list()
 
     def print_dots(self):
         start, end = [0, 0.5], [0.5, 0]
