@@ -3,6 +3,7 @@ import numpy as np
 from my_own.task1.ORTask import Neuron_OR
 from my_own.task1.XoRTask import Neuron_XOR
 from my_own.task2.gradient import Gradient
+from my_own.task3.linregr import Regression
 import json
 
 
@@ -15,6 +16,8 @@ LIN_REG_task = 5
 neuron_or = Neuron_OR()
 neuron_xor = Neuron_XOR()
 gradient = Gradient()
+regression = Regression()
+regression.learn()
 
 HOST = ('localhost', 10000)
 
@@ -80,6 +83,13 @@ while True:
             result = gradient.get_grad_after_descent(steps)
             result = result.tolist()
             response = json.dumps({"dot1": result[0], "dot2": result[1]})
+            conn.send(response.encode())
+        elif task == LIN_REG_task:
+            x = data.get("x")
+            results = list()
+            for d in x:
+                results.append(regression.predict(d).item())
+            response = json.dumps({"answers": results})
             conn.send(response.encode())
 
 
