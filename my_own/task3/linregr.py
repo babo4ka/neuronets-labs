@@ -1,4 +1,5 @@
 import torch
+import matplotlib.pyplot as plt
 
 
 class Net(torch.nn.Module):
@@ -15,7 +16,7 @@ class Net(torch.nn.Module):
         return x
 
 
-class Regression():
+class Regression:
     def __init__(self):
         self.x_train = torch.rand(100)
         self.x_train = self.x_train * 20 - 10
@@ -49,5 +50,7 @@ class Regression():
             self.optimizer.step()
 
     def predict(self, x):
-        x = torch.tensor([x])
         return self.net.forward(x)
+
+
+

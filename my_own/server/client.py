@@ -9,7 +9,7 @@ HOST = ('localhost', 10000)
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(HOST)
 
-x = torch.linspace(-10, 10, 100).tolist()
+x = [2., 3., 4., .5, 6., 7., -1., -3., 12.]
 
 data = json.dumps({"x": x, "task":5})
 print(data)

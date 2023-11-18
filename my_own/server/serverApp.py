@@ -1,5 +1,6 @@
 import socket
 import numpy as np
+import torch
 from my_own.task1.ORTask import Neuron_OR
 from my_own.task1.XoRTask import Neuron_XOR
 from my_own.task2.gradient import Gradient
@@ -86,10 +87,11 @@ while True:
             conn.send(response.encode())
         elif task == LIN_REG_task:
             x = data.get("x")
-            results = list()
-            for d in x:
-                results.append(regression.predict(d).item())
-            response = json.dumps({"answers": results})
+            x = torch.tensor(x)
+            x.unsqueeze_(1)
+            answers = regression.predict(x)
+            answers = answers.tolist()
+            response = json.dumps({"answers": answers})
             conn.send(response.encode())
 
 
