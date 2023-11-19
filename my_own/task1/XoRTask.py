@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 class Neuron_XOR():
     def __init__(self):
         self.w1 = [1, 1, -1.5]
-        self.w2 = [1, 1, -0.5]
+        self.w2 = [1, 1, -0.99]
         self.dots0 = list()
         self.dots1 = list()
 

@@ -69,23 +69,19 @@ while True:
             response = json.dumps({"answers": answers, "dots0": dots0, "dots1": dots1})
             conn.send(response.encode())
         elif task == GRAD_dot_task:
-            dot1 = data.get("dot1")
-            dot2 = data.get("dot2")
-            w = [dot1, dot2]
-            gradient.set_w(w)
+            dot = data.get("dot")
+            gradient.set_w(dot)
             result = gradient.get_grad_in_dot()
             result = result.tolist()
-            response = json.dumps({"dot1": result[0], "dot2": result[1]})
+            response = json.dumps({"dot": result})
             conn.send(response.encode())
         elif task == GRAD_desc_task:
-            dot1 = data.get("dot1")
-            dot2 = data.get("dot2")
+            dot = data.get("dot")
             steps = data.get("steps")
-            w = [dot1, dot2]
-            gradient.set_w(w)
+            gradient.set_w(dot)
             result = gradient.get_grad_after_descent(steps)
             result = result.tolist()
-            response = json.dumps({"dot1": result[0], "dot2": result[1]})
+            response = json.dumps({"dot": result})
             conn.send(response.encode())
         elif task == LIN_REG_task:
             x = data.get("x")

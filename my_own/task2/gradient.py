@@ -8,7 +8,7 @@ class Gradient():
         self.alpha = 0.001
 
     def set_w(self, w):
-        self.w = torch.tensor(w, requires_grad=True)
+        self.w = torch.tensor(w, requires_grad=True, dtype=torch.float32)
         self.w.to(self.device)
 
     def function(self, x):
