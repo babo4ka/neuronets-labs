@@ -45,7 +45,7 @@ class WineNet(torch.nn.Module):
 
 
 n_input = 13
-n_hidden = 5  # choose number of hidden neurons
+n_hidden = 10  # choose number of hidden neurons
 wine_net = WineNet(n_input, n_hidden)
 
 loss = torch.nn.CrossEntropyLoss()
@@ -54,7 +54,7 @@ optimizer = torch.optim.Adam(wine_net.parameters(), lr=1.0e-3)
 batch_size = 10  # choose different batch sizes
 
 start = time.time()
-for epoch in range(2000):
+for epoch in range(5000):
     order = np.random.permutation(len(X_train))
     for start_index in range(0, len(X_train), batch_size):
         optimizer.zero_grad()
@@ -74,6 +74,10 @@ for epoch in range(2000):
     if epoch % 100 == 0:
         test_preds = wine_net.forward(X_test)
         test_preds = test_preds.argmax(dim=1)
+        print((test_preds == y_test).float().mean(), epoch)
+        if np.asarray((test_preds == y_test).float().mean()) > 0.8:
+            print("earlier", epoch)
+            break
 
 end = time.time()
 print(wine_net.fc1.in_features, np.asarray((test_preds == y_test).float().mean()) > 0.8)

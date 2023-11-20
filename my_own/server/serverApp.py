@@ -61,6 +61,8 @@ while True:
             x2 = data.get("x2")
             inputData = [x1, x2]
 
+            neuron_xor.clear_dots()
+
             for i in range(len(x1)):
                 d = np.array([inputData[0][i], inputData[1][i]])
                 answers.append(neuron_xor.operate_xor(d))

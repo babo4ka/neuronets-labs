@@ -4,7 +4,7 @@ import numpy as np
 class Neuron_OR():
     def __init__(self):
         self.w1, self.w2 = 1, 1
-        self.b = -0.89
+        self.b = -0.5
         self.dots0 = list()
         self.dots1 = list()
 
