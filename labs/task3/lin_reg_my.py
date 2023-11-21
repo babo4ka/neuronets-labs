@@ -42,7 +42,8 @@ sine_net = SineNet(50)
 
 def predict(net, x, y):
     y_pred = net.forward(x)
-
+    print(y_pred[:5])
+    print(y[:5])
     plt.plot(x.numpy(), y.numpy(), 'o', label='Groud truth')
     plt.plot(x.numpy(), y_pred.data.numpy(), 'o', c='r', label='Prediction')
     plt.legend(loc='upper left')

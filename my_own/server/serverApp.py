@@ -87,7 +87,7 @@ while True:
             conn.send(response.encode())
         elif task == LIN_REG_task:
             x = data.get("x")
-            x = torch.tensor(x)
+            x = torch.FloatTensor(x)
             x.unsqueeze_(1)
             answers = regression.predict(x)
             answers = answers.tolist()
