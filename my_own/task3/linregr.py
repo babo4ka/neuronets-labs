@@ -50,9 +50,5 @@ class Regression:
             self.optimizer.step()
 
     def predict(self, x):
-        print(self.net.forward(x))
-        print(torch.pow(torch.cos(x+3), 2) * torch.pow(2, x-3))
         return self.net.forward(x)
-
-
 
