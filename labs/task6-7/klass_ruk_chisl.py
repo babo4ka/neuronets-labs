@@ -26,7 +26,7 @@ X_test = X_test.float()
 
 plt.imshow(X_train[0, :, :])
 plt.show()
-print(y_train[0])
+print(y_train)
 
 X_train = X_train.reshape([-1, 28 * 28])
 X_test = X_test.reshape([-1, 28 * 28])
