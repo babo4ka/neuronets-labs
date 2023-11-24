@@ -51,7 +51,7 @@ wine_net = WineNet(n_input, n_hidden)
 loss = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(wine_net.parameters(), lr=1.0e-3)
 
-batch_size = 10  # choose different batch sizes
+batch_size = 100  # choose different batch sizes
 
 start = time.time()
 for epoch in range(5000):
@@ -75,9 +75,6 @@ for epoch in range(5000):
         test_preds = wine_net.forward(X_test)
         test_preds = test_preds.argmax(dim=1)
         print((test_preds == y_test).float().mean(), epoch)
-        if np.asarray((test_preds == y_test).float().mean()) > 0.8:
-            print("earlier", epoch)
-            break
 
 end = time.time()
 print(wine_net.fc1.in_features, np.asarray((test_preds == y_test).float().mean()) > 0.8)
