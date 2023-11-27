@@ -22,9 +22,9 @@ y_test = MNIST_test.test_labels
 X_train = X_train.float()
 X_test = X_test.float()
 
-plt.imshow(X_train[0, :, :])
-plt.show()
-print(y_train)
+# plt.imshow(X_train[0, :, :])
+# plt.show()
+print(y_train[0])
 
 X_train = X_train.reshape([-1, 28 * 28])
 X_test = X_test.reshape([-1, 28 * 28])
@@ -86,20 +86,22 @@ for epoch in range(40):
         optimizer.step()
 
     test_preds = mnist_net.forward(X_test)
-    # test_loss_history.append(loss(test_preds, y_test))
+    loss_val = loss(test_preds, y_test)
+    test_loss_history.append(loss_val.detach().cpu())
 
     accuracy = (test_preds.argmax(dim=1) == y_test).float().mean()
-    # test_accuracy_history.append(accuracy)
+    test_accuracy_history.append(accuracy.cpu())
     print("valid", accuracy)
 
     train_preds = mnist_net.forward(X_train)
-    train_loss_history.append(loss(train_preds, y_train))
+    train_loss_history.append(loss(train_preds, y_train).detach().cpu())
     train_accuracy = (train_preds.argmax(dim=1) == y_train).float().mean()
-    train_accuracy_history.append(train_accuracy)
+    train_accuracy_history.append(train_accuracy.cpu())
 
 end = time.time()
 
 print(end - start)
-# plt.plot(test_accuracy_history)
-
-# plt.plot(test_loss_history)
+plt.plot(test_loss_history, c='green', label='потери validation')
+plt.plot(train_loss_history, c='red', label='потери train')
+plt.legend(loc='upper left')
+plt.show()
