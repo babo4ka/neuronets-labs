@@ -11,7 +11,7 @@ client.connect(HOST)
 
 x = [2., 3., 4., .5, 6., 7., -1., -3., 12.]
 
-data = json.dumps({"x": x, "task":5})
+data = json.dumps({"x": x, "task": 5})
 print(data)
 client.send(data.encode())
 
