@@ -5,6 +5,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_wine
 import time
 
+random.seed(0)
+np.random.seed(0)
+torch.manual_seed(0)
+torch.cuda.manual_seed(0)
+torch.backends.cudnn.deterministic = True
+
 wine = load_wine()
 features = 13
 
@@ -25,17 +31,17 @@ class WineNet(torch.nn.Module):
         super(WineNet, self).__init__()
         self.fc1 = torch.nn.Linear(n_input, n_hidden_neurons)
         self.activ1 = torch.nn.Sigmoid()
-        self.fc2 = torch.nn.Linear(n_hidden_neurons, n_hidden_neurons)
-        self.activ2 = torch.nn.Sigmoid()
-        self.fc3 = torch.nn.Linear(n_hidden_neurons, 3)
+        self.fc2 = torch.nn.Linear(n_hidden_neurons, 3)
+        # self.activ2 = torch.nn.Sigmoid()
+        # self.fc3 = torch.nn.Linear(n_hidden_neurons, 3)
         self.sm = torch.nn.Softmax(dim=1)
 
     def forward(self, x):
         x = self.fc1(x)
         x = self.activ1(x)
         x = self.fc2(x)
-        x = self.activ2(x)
-        x = self.fc3(x)
+        # x = self.activ2(x)
+        # x = self.fc3(x)
         return x
 
     def inference(self, x):
@@ -45,13 +51,13 @@ class WineNet(torch.nn.Module):
 
 
 n_input = 13
-n_hidden = 10  # choose number of hidden neurons
+n_hidden = 35  # choose number of hidden neurons
 wine_net = WineNet(n_input, n_hidden)
 
 loss = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(wine_net.parameters(), lr=1.0e-3)
 
-batch_size = 100  # choose different batch sizes
+batch_size = 500  # choose different batch sizes
 
 start = time.time()
 for epoch in range(5000):
