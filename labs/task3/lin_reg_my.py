@@ -67,7 +67,7 @@ def predict(net, x, y):
 
 # predict(sine_net, x_validation, y_validation)
 
-optimizer = torch.optim.Adam(sine_net.parameters(), lr=0.001)
+optimizer = torch.optim.Adam(sine_net.parameters(), lr=0.1)
 
 
 def loss(pred, target):
