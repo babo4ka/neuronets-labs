@@ -50,13 +50,13 @@ class SineNet(torch.nn.Module):
         return x
 
 
-sine_net = SineNet(25)
+sine_net = SineNet(45)
 
 
 def predict(net, x, y):
     y_pred = net.forward(x)
 
-    plt.plot(x.numpy(), y.numpy(), 'o', label='Groud truth')
+    plt.plot(x.numpy(), y.numpy(), 'o', label='Ground truth')
     plt.plot(x.numpy(), y_pred.data.numpy(), 'o', c='r', label='Prediction')
     plt.legend(loc='upper left')
     plt.xlabel('x')
@@ -71,11 +71,12 @@ optimizer = torch.optim.Adam(sine_net.parameters(), lr=0.01)
 
 
 def loss(pred, target):
-    squares = (pred - target) ** 2
-    return squares.mean()
+    # squares = (pred - target) ** 2
+    # return squares.mean()
+    return (pred - target).abs().mean()
 
 
-for epoch_index in range(2000):
+for epoch_index in range(2500):
     optimizer.zero_grad()
 
     y_pred = sine_net.forward(x_train)
