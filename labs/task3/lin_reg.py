@@ -16,6 +16,8 @@ matplotlib.rcParams['figure.figsize'] = (13.0, 5.0)
 x_train = torch.rand(100)
 x_train = x_train * 20 - 10
 
+print(x_train[:5])
+
 y_train = torch.pow(2, x_train) * torch.sin(torch.pow(2, (-x_train)))
 
 noise = torch.randn(y_train.size()) / 5
@@ -24,6 +26,8 @@ y_train = y_train + noise
 
 x_train.unsqueeze_(1)
 y_train.unsqueeze_(1)
+
+print(x_train[:5])
 
 x_validation = torch.linspace(-10, 10, 100)
 y_validation = torch.pow(2, x_validation.data) * torch.sin(torch.pow(2, (-x_validation.data)))
