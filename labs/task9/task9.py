@@ -6,6 +6,7 @@ H = 8
 W = 16
 
 x = torch.ones((N, C, H, W))
+# print(x.shape)
 
 torch.Size([4, 10, 8, 16])
 out1 = torch.nn.Conv2d(C, C_out, kernel_size=(3, 3), padding=1)(x)
@@ -36,10 +37,9 @@ out6 = torch.nn.Conv2d(C, C_out, kernel_size=(3, 3), padding=8)(x)
 print(out6.shape) # для самопроверки
 
 torch.Size([4, 10, 7, 15])
-out7 = torch.nn.Conv2d(C, C_out, kernel_size=(4, 4), padding=...)(x)
+out7 = torch.nn.Conv2d(C, C_out, kernel_size=(4, 4), padding=1)(x)
 print(out7.shape) # для самопроверки
 
-
 torch.Size([4, 10, 9, 17])
-out8 = torch.nn.Conv2d(C, C_out, kernel_size=(2, 2), padding=...)(x)
+out8 = torch.nn.Conv2d(C, C_out, kernel_size=(2, 2), padding=1)(x)
 print(out8.shape) # для самопроверки
