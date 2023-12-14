@@ -67,7 +67,7 @@ X_train = X_train.to(device)
 y_train = y_train.to(device)
 
 start = time.time()
-for epoch in range(40):
+for epoch in range(200):
     order = np.random.permutation(len(X_train))
 
     for start_index in range(0, len(X_train), batch_size):

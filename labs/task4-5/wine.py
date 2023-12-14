@@ -12,6 +12,7 @@ torch.cuda.manual_seed(0)
 torch.backends.cudnn.deterministic = True
 
 wine = load_wine()
+print(wine)
 features = 13
 
 X_train, X_test, y_train, y_test = train_test_split(
@@ -51,16 +52,17 @@ class WineNet(torch.nn.Module):
 
 
 n_input = 13
-n_hidden = 35  # choose number of hidden neurons
+n_hidden = 24  # choose number of hidden neurons
 wine_net = WineNet(n_input, n_hidden)
 
 loss = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(wine_net.parameters(), lr=1.0e-3)
 
-batch_size = 500  # choose different batch sizes
+batch_size = 50  # choose different batch sizes
 
-start = time.time()
+
 for epoch in range(5000):
+    start = time.time()
     order = np.random.permutation(len(X_train))
     for start_index in range(0, len(X_train), batch_size):
         optimizer.zero_grad()
@@ -76,12 +78,16 @@ for epoch in range(5000):
         loss_value.backward()
 
         optimizer.step()
-
+    end = time.time()
     if epoch % 100 == 0:
         test_preds = wine_net.forward(X_test)
         test_preds = test_preds.argmax(dim=1)
+        print('время:', end - start)
         print((test_preds == y_test).float().mean(), epoch)
 
-end = time.time()
+
+
+
+
 print(wine_net.fc1.in_features, np.asarray((test_preds == y_test).float().mean()) > 0.8)
-print('время:', end-start)
+print('размер батча:', batch_size)
