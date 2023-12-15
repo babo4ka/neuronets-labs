@@ -14,11 +14,11 @@ torch.backends.cudnn.deterministic = True
 wine = load_wine()
 print(wine)
 features = 13
-
+ts = 0.3
 X_train, X_test, y_train, y_test = train_test_split(
     wine.data[:, :features],
     wine.target,
-    test_size=0.3,
+    test_size=ts,
     shuffle=True)
 
 X_train = torch.FloatTensor(X_train)
@@ -82,7 +82,7 @@ for epoch in range(5000):
     if epoch % 100 == 0:
         test_preds = wine_net.forward(X_test)
         test_preds = test_preds.argmax(dim=1)
-        print('время:', end - start)
+        # print('время:', end - start)
         print((test_preds == y_test).float().mean(), epoch)
 
 
@@ -90,4 +90,4 @@ for epoch in range(5000):
 
 
 print(wine_net.fc1.in_features, np.asarray((test_preds == y_test).float().mean()) > 0.8)
-print('размер батча:', batch_size)
+print('test size:', ts)
