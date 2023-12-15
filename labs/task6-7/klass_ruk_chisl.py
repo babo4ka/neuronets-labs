@@ -47,6 +47,7 @@ class MNISTNet(torch.nn.Module):
 mnist_net = MNISTNet(100)
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+# device = torch.device('cpu')
 mnist_net = mnist_net.to(device)
 
 loss = torch.nn.CrossEntropyLoss()
@@ -67,7 +68,7 @@ X_train = X_train.to(device)
 y_train = y_train.to(device)
 
 start = time.time()
-for epoch in range(200):
+for epoch in range(100):
     order = np.random.permutation(len(X_train))
 
     for start_index in range(0, len(X_train), batch_size):
@@ -100,7 +101,8 @@ for epoch in range(200):
 
 end = time.time()
 
-print(end - start)
+print('время:', end - start)
+print(device)
 plt.plot(test_loss_history, c='green', label='потери validation')
 plt.plot(train_loss_history, c='red', label='потери train')
 plt.legend(loc='upper left')
