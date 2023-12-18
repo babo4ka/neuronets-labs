@@ -5,10 +5,12 @@ import matplotlib.pyplot as plt
 import torchvision.datasets
 import time
 
-random.seed(0)
-np.random.seed(0)
-torch.manual_seed(0)
-torch.cuda.manual_seed(0)
+seed = 2
+
+random.seed(seed)
+np.random.seed(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed(seed)
 torch.backends.cudnn.deterministic = True
 
 MNIST_train = torchvision.datasets.MNIST('./', download=True, train=True)
@@ -51,7 +53,7 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 mnist_net = mnist_net.to(device)
 
 loss = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(mnist_net.parameters(), lr=1.0e-3)
+optimizer = torch.optim.SGD(mnist_net.parameters(), lr=1.0e-3, momentum=0.8)
 
 batch_size = 100
 
