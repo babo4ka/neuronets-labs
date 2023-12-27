@@ -33,16 +33,22 @@ class LeNet5(torch.nn.Module):
         super(LeNet5, self).__init__()
 
         self.conv1 = torch.nn.Conv2d(
-            in_channels=1, out_channels=6, kernel_size=5, padding=2)
-        self.act1 = torch.nn.Tanh()
+            in_channels=1, out_channels=6, kernel_size=3, padding=2)
+        self.act1 = torch.nn.ReLU()
+        self.convMy1 = torch.nn.Conv2d(
+            in_channels=6, out_channels=8, kernel_size=3, padding=0)
+        self.actMy1 = torch.nn.ReLU()
         self.pool1 = torch.nn.AvgPool2d(kernel_size=2, stride=2)
 
         self.conv2 = torch.nn.Conv2d(
-            in_channels=6, out_channels=16, kernel_size=5, padding=0)
-        self.act2 = torch.nn.Tanh()
+            in_channels=8, out_channels=16, kernel_size=3, padding=0)
+        self.act2 = torch.nn.ReLU()
+        self.convMy2 = torch.nn.Conv2d(
+            in_channels=16, out_channels=32, kernel_size=3, padding=0)
+        self.actMy2 = torch.nn.ReLU()
         self.pool2 = torch.nn.AvgPool2d(kernel_size=2, stride=2)
 
-        self.fc1 = torch.nn.Linear(5 * 5 * 16, 120)
+        self.fc1 = torch.nn.Linear(5 * 5 * 32, 120)
         self.act3 = torch.nn.Tanh()
 
         self.fc2 = torch.nn.Linear(120, 84)
@@ -53,10 +59,14 @@ class LeNet5(torch.nn.Module):
     def forward(self, x):
         x = self.conv1(x)
         x = self.act1(x)
+        x = self.convMy1(x)
+        x = self.actMy1(x)
         x = self.pool1(x)
 
         x = self.conv2(x)
         x = self.act2(x)
+        x = self.convMy2(x)
+        x = self.actMy2(x)
         x = self.pool2(x)
 
         x = x.view(x.size(0), x.size(1) * x.size(2) * x.size(3))
@@ -76,7 +86,7 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 lenet5 = lenet5.to(device)
 
 loss = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.RMSprop(lenet5.parameters(), lr=1.0e-3)
+optimizer = torch.optim.SGD(lenet5.parameters(), lr=1.0e-2, momentum=0.7)
 
 batch_size = 100
 
@@ -121,16 +131,14 @@ for epoch in range(100):
     print(accuracy)
 
 
-# plt.plot(test_accuracy_history, label='accuracy')
+plt.plot(test_accuracy_history, label='accuracy')
 
 # plt.plot(test_loss_history, label='loss validation')
 #
 # plt.plot(train_loss_history, label='loss train')
 
-# plt.axhline(y=0.992, color='r', linestyle='-', label='accuracy 0.992')
+plt.axhline(y=0.992, color='r', linestyle='-', label='accuracy 0.992')
 
-# plt.legend()
+plt.legend()
 
-# plt.show()
-
-
+plt.show()
