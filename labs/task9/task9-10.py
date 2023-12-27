@@ -5,6 +5,8 @@ import numpy as np
 import torch
 import torchvision.datasets
 
+import time
+
 random.seed(0)
 np.random.seed(0)
 torch.manual_seed(0)
@@ -18,6 +20,7 @@ X_train = MNIST_train.train_data
 y_train = MNIST_train.train_labels
 X_test = MNIST_test.test_data
 y_test = MNIST_test.test_labels
+
 
 # plt.imshow(X_train[0, :, :])
 # plt.show()
@@ -75,7 +78,7 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 lenet5 = lenet5.to(device)
 
 loss = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(lenet5.parameters(), lr=1.0e-3)
+optimizer = torch.optim.RMSprop(lenet5.parameters(), lr=1.0e-3)
 
 batch_size = 100
 
@@ -90,6 +93,7 @@ y_test = y_test.to(device)
 X_train = X_train.to(device)
 y_train = y_train.to(device)
 
+start = time.time()
 for epoch in range(100):
     order = np.random.permutation(len(X_train))
     for start_index in range(0, len(X_train), batch_size):
@@ -118,13 +122,20 @@ for epoch in range(100):
 
     print(accuracy)
 
+end = time.time()
 
-plt.plot(test_accuracy_history, label='accuracy')
+print('время:', end-start)
 
-plt.plot(test_loss_history, label='loss validation')
+# plt.plot(test_accuracy_history, label='accuracy')
 
-plt.plot(train_loss_history, label='loss train')
+# plt.plot(test_loss_history, label='loss validation')
+#
+# plt.plot(train_loss_history, label='loss train')
 
-plt.legend()
+# plt.axhline(y=0.992, color='r', linestyle='-', label='accuracy 0.992')
 
-plt.show()
+# plt.legend()
+
+# plt.show()
+
+
